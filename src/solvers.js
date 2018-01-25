@@ -16,7 +16,31 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  let board = new Board({'n': n});
+  let boardArr = board.rows();
+  let searchRows = boardArr => {
+    boardArr.forEach( (row, rowIndex) => {
+      let currentRow = row;
+      row.forEach( (space, colIndex) => {
+        //check if a 1 at current index would pass all rook tests.
+          // if it would, add 1 to current position in row and recurse;
+          if (space !== 1){
+            board.togglePiece(rowIndex, colIndex)
+            if (!board.hasAnyRooksConflicts()){
+              return searchRows(boardArr);
+            } else {
+              board.togglePiece(rowIndex, colIndex)
+            }
+        }
+      })
+    })
+  }
+  var solution = searchRows(boardArr);
+
+  //place piece
+  //check col con
+  //check row con
+  //if both return false, place rook
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;

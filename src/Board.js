@@ -148,51 +148,41 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      //inputs
-        //nested array
-      //outputs
-        //boolean
-      //constrains
-            //   let n = (board.length - i) - 1;
-            //   for (; n > 0; n--){
-            //     counter += board[i][n];
-            //   }
-            //  }
-      //edge cases
-      //get negative index
-      // let boardLength = this.rows().length;
-      //
-      // let board = this.rows();
-      // let col = majorDiagonalColumnIndexAtFirstRow
-      // let counter = 0;
-      // for (let i = board.length; i > 0; i--) {
-      //     for (let n = col; n < board.length - col;){
-      //       if (board[i][n]){
-      //       counter += board[i][col]
-      //     }
-      //       n++
-      //     }
-      // }
-
-
-      // return counter > 1;
+      //we need to get the size of our board
       var size = this.get('n');
+      //we need a counter var
       var count = 0;
+      //keep track of what row we are on with a second counter
       var row = 0;
+      //get the index of the col
       var col = majorDiagonalColumnIndexAtFirstRow;
-
+      //loop through both col and row in one loop for better complexity
       for(; row < size && col < size; row++, col++) {
-        if(col >= 1) {
+        //check if the indes is greater than zero
+        if(col >= 0) {
+          //get the actual row
           var rowIndex = this.get(row)
+          //increase the count (by either 0 or 1)
           count += rowIndex[col]
         }
       }
-      return count >= 1;
+      //check if we had more than one rook in that row
+      return count > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      //get board size
+      const size = this.get('n')
+      //loop through the board
+      for (let n = -size; n < size; n += 1) {
+      //make a call to has major diagonal conflict
+      if (this.hasMajorDiagonalConflictAt(n)) return true;
+      //if any call to our function returns true
+      //return true
+    }
+    return false;
+      //else return false
     },
 
 
@@ -202,12 +192,44 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //we need to get the size of our board
+      // debugger;
+      var size = this.get('n');
+      //we need a counter var
+      var count = 0;
+      //keep track of what row we are on with a second counter
+      var row = size - 1;
+      //get the index of the col
+      var col = minorDiagonalColumnIndexAtFirstRow - size + 1;
+      //loop through both col and row in one loop for better complexity
+      for(; row > -size && col < size; row--, col++) {
+        //check if the indes is greater than zero
+        if(col >= 0) {
+          //get the actual row
+          var rowIndex = this.get(row)
+          //increase the count (by either 0 or 1)
+          if(rowIndex !== undefined) {
+            count += rowIndex[col];
+          }
+        }
+      }
+      //check if we had more than one queen in that row
+      return count > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      //get board size
+      const size = this.get('n')
+      //loop through the board
+      for (let n = size + 1; n > -size; n -= 1) {
+      //make a call to has major diagonal conflict
+      if (this.hasMinorDiagonalConflictAt(n)) return true;
+      //if any call to our function returns true
+      //return true
+    }
+    return false;
+      //else return false
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
